@@ -17,6 +17,6 @@ export class AppComponent {
   readonly x2 = computed(() => this.x() * 2);
 
   increment() {
-    this.x.set(this.x() + 1);
+    this.x.update((x) => ++x);
   }
 }
