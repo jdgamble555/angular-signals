@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class AppComponent {
-  title = 'angular-signals';
 
   readonly x = signal(1);
   readonly x2 = computed(() => this.x() * 2);
