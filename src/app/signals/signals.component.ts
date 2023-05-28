@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class SignalsComponent {
+  @Input() path!: string;
+
   readonly x = signal(1);
   readonly x2 = computed(() => this.x() * 2);
 

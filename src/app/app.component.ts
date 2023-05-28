@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { filter, map } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
@@ -8,16 +10,23 @@ import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/rou
   imports: [CommonModule, RouterOutlet, RouterModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <router-outlet></router-outlet>
+  <router-outlet />
   <p></p>
-  <ng-container *ngIf="this.router.routerState.snapshot.url === '/rxjs'">
-    <p><a routerLink="/">See Signal Version</a></p>
-  </ng-container>
-  <ng-container *ngIf="this.router.routerState.snapshot.url === '/'">
+  <ng-container *ngIf="this.isSignal | async else rxjs">
     <p><a routerLink="/rxjs">See Rxjs Version</a></p>
-  </ng-container>  
+  </ng-container>
+  <ng-template #rxjs>
+    <p><a routerLink="/">See Signal Version</a></p>
+  </ng-template>
   `
 })
 export class AppComponent {
-  constructor(public router: Router) { }
+
+  router = inject(Router);
+
+  isSignal = this.router.events.pipe(
+    filter((event): event is NavigationStart => event instanceof NavigationStart),
+    map((event) => event.url === '/')
+  );
+
 }
