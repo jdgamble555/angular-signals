@@ -1,22 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-  <p>{{ x2() }}</p>
-  <button (click)="increment()">Double</button>
-  `
+  template: `<router-outlet></router-outlet>`
 })
-export class AppComponent {
-
-  readonly x = signal(1);
-  readonly x2 = computed(() => this.x() * 2);
-
-  increment() {
-    this.x.update((x) => ++x);
-  }
-}
+export class AppComponent { }
